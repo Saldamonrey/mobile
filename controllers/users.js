@@ -285,9 +285,28 @@ const userData = await User.setPassword(password);
 };
 
 module.exports.addImage = async function(req, res, next) {
-const { image } = req.body
-console.log(123)
-User.findByIdAndUpdate(req.user._id, {$addToSet: {media: {source:{uri:image}}}}, (err, result) => {
+  upload(req, res, async function(err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(200).json(err);
+    } else if (err) {
+      console.log(err);
+      return res.status(200).json(err);
+    }
+    let maxsize = 20 * 1024 * 1024;
+    let supportMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+    if (req.file.size > maxsize) {
+         fs.unlinkSync(req.file.path);
+         return res.json({success: false, msg: 'File is so more than 2 Mb'});
+       }
+    if(supportMimeTypes.indexOf(req.file.mimetype) == -1) {
+        fs.unlinkSync(req.file.path);
+        return res.json({success: false, msg: 'Unsupported mimetype'});
+    }
+    try {
+      fs.unlinkSync(user.avatar);
+    } catch (err) {}
+    const { _id } = req.user;
+    User.findByIdAndUpdate(req.user._id, {$addToSet: {media: {source:{uri:"http://92.53.124.246:3001/"+req.file.path.replace(/\\/g, '/')}}}}, (err, result) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler.getErrorMessage(err)
@@ -296,6 +315,7 @@ User.findByIdAndUpdate(req.user._id, {$addToSet: {media: {source:{uri:image}}}},
       return res.json({ success: true, msg: "Image added." });
     }
   })
+  });
 };
 
 
