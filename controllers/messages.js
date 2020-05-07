@@ -100,19 +100,27 @@ module.exports.uploadFile = async function(req, res) {
     let maxsize = 20 * 1024 * 1024;
     let supportMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     if (req.file.size > maxsize) {
-        fs.unlinkSync(req.file.path);
-        return res.json({success: false, msg: 'File is so more than 2 Mb'});
+      fs.unlinkSync(req.file.path);
+      return res.json({success: false, msg: 'File is so more than 2 Mb'});
     }
     if(supportMimeTypes.indexOf(req.file.mimetype) == -1) {
-        fs.unlinkSync(req.file.path);
-        return res.json({success: false, msg: 'Unsupported mimetype'});
+      fs.unlinkSync(req.file.path);
+      return res.json({success: false, msg: 'Unsupported mimetype'});
     }
-    console.log(req.file.path)
+    console.log(req.body)
+    User.findByIdAndUpdate('_id': {$in :req.user._id}, {$addToSet: {media: {source:{uri:"http://92.53.124.246:3001/"+req.file.path.replace(/\\/g, '/')}}}}, (err, result) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    } else{
+      return res.json({ success: true, msg: "Image added." });
+    }
     res.status(200).json({
-          success: true,
-          image: req.file.path.replace(/\\/g, '/'),
-          message: "Фото загружено" 
-      });
+      success: true,
+      image: req.file.path.replace(/\\/g, '/'),
+      message: "Фото загружено" 
+    });
   });
 };
 
