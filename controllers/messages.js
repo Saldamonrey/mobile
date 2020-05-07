@@ -91,6 +91,7 @@ module.exports.addMessages = async function(req, res) {
 
 module.exports.uploadFile = async function(req, res) {
   upload(req, res, async function(err) {
+    console.log(req.body)
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err);
     } else if (err) {
@@ -107,7 +108,6 @@ module.exports.uploadFile = async function(req, res) {
       fs.unlinkSync(req.file.path);
       return res.json({success: false, msg: 'Unsupported mimetype'});
     }
-    console.log(req.body)
     User.findByIdAndUpdate('_id': {$in :req.user._id}, {$addToSet: {media: {source:{uri:"http://92.53.124.246:3001/"+req.file.path.replace(/\\/g, '/')}}}}, (err, result) => {
     if (err) {
       return res.status(400).json({
