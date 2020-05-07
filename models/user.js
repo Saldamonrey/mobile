@@ -45,7 +45,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  media: [{type:String}],
+  media: [{source:{uri:String}}],
   salt: String,
   chats: [{type: mongoose.Schema.ObjectId, ref: 'Chat'}],
   block_list: [{type: mongoose.Schema.ObjectId, ref: 'Chat'}] 

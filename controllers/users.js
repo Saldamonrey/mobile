@@ -54,7 +54,7 @@ module.exports.profile = async function(req, res, next) {
       message: "UnauthorizedError: private profile"
     });
   } else{
-    User.findById({_id:req.user._id})
+    User.findById({_id:req.user._id}, "-media._id")
     .populate({path:"chats", select:"_id members last_message", 
       populate: [{path: "members", select:"_id nickname avatar number"}, 
       {path: "last_message", select:"_id text user createdAt"}]
@@ -115,7 +115,7 @@ console.log(req.body)
       message: "Please pass correct username and passwords."
     });
   } else {
-    mail.sendToken("http://c773d17d.ngrok.io/verify/" + token, email).then(result => {
+    mail.sendToken("http://92.53.124.246:3001/verify/" + token, email).then(result => {
         let send = result.smtpTransport.sendMail(result.mailOptions, function(
           error,
           info
@@ -283,4 +283,19 @@ const userData = await User.setPassword(password);
     return res.json({ success: true, msg: "Password change." });
   });
 };
+
+module.exports.addImage = async function(req, res, next) {
+const { image } = req.body
+console.log(123)
+User.findByIdAndUpdate(req.user._id, {$addToSet: {media: {source:{uri:image}}}}, (err, result) => {
+    if (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err)
+      })
+    } else{
+      return res.json({ success: true, msg: "Image added." });
+    }
+  })
+};
+
 

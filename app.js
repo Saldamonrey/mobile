@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 var multer = require("multer");
 
-const port = 3000;
+const port = 3001;
 const db_url = 'mongodb://localhost:27017/from_my_heart';
 const config = 'Salih';
 
@@ -58,6 +58,7 @@ app.post("/getnickname", auth, ctrlUsers.getIdByNickname);
 app.post("/sendereset", ctrlUsers.sendResetCode);
 app.post("/checkreset", ctrlUsers.checkReset);
 app.post("/reset", ctrlUsers.resetPassword);
+app.post("/addimage", auth, ctrlUsers.addImage);
 //Chat routes
 app.post("/chat", auth, ctrlChats.createChat);
 app.post("/checkchat", auth, ctrlChats.checkChat);
