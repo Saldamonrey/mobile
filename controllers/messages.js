@@ -91,7 +91,6 @@ module.exports.addMessages = async function(req, res) {
 
 module.exports.uploadFile = async function(req, res) {
   upload(req, res, async function(err) {
-    console.log(req.body)
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err);
     } else if (err) {
@@ -108,14 +107,31 @@ module.exports.uploadFile = async function(req, res) {
       fs.unlinkSync(req.file.path);
       return res.json({success: false, msg: 'Unsupported mimetype'});
     }
-    User.findByIdAndUpdate('_id': {$in :req.user._id}, {$addToSet: {media: {source:{uri:"http://92.53.124.246:3001/"+req.file.path.replace(/\\/g, '/')}}}}, (err, result) => {
-    if (err) {
-      return res.status(400).json({
-        error: errorHandler.getErrorMessage(err)
-      })
-    } else{
-      return res.json({ success: true, msg: "Image added." });
-    }
+    console.log(req.file.path)
+        // User.findByIdAndUpdate({'_id': {$in :req.user.}}, {$addToSet: {media: {source:{uri:"http://92.53.124.246:3001/"+req.file.path.replace(/\\/g, '/')}}}}, (err, result) => {
+        //   if(err) {
+        //     return res.status(200).json({
+        //     success: false,
+        //     result: "Error"
+        //   })
+        //   }
+        //   return res.status(200).json({
+        //     status: "OK"
+        //   })
+        // }
+      User.findByIdAndUpdate({'_id': {$in :req.user}}, 
+        {$addToSet: {media: {source:{uri:"http://92.53.124.246:3001/"+req.file.path.replace(/\\/g, '/')}}}}, 
+        (err, result) => {
+          if(err) {
+            return res.status(200).json({
+            success: false,
+            result: "Error"
+          })
+          }
+          return res.status(200).json({
+            status: "OK"
+          })
+        }) 
     res.status(200).json({
       success: true,
       image: req.file.path.replace(/\\/g, '/'),
