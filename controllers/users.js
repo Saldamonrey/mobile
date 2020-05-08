@@ -19,7 +19,6 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({ storage: storage }).single("photo");
-
 module.exports.login = async function(req, res, next) {
   console.log(req.body)
   passport.authenticate('local', (err, passportUser, info) => {
