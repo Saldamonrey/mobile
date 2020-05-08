@@ -36,8 +36,8 @@ module.exports.sendMailToUser = async function(name, number, email) {
       service: "gmail",
       secure: false,
       auth: {
-        user: "salihanski@gmail.com",
-        pass: "pmosvxwsteskdwlt"
+        user: "mr.pagashev@gmail.com",
+        pass: "kspljrvtqbhopagp"
       }
     });
   } catch (e) {
@@ -63,8 +63,8 @@ module.exports.sendToken = async function(url, email) {
       service: "gmail",
       secure: false,
       auth: {
-        user: "salihanski@gmail.com",
-        pass: "pmosvxwsteskdwlt"
+        user: "mr.pagashev@gmail.com",
+        pass: "kspljrvtqbhopagp"
       }
     });
   } catch (e) {

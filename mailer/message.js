@@ -41,7 +41,7 @@ module.exports.createToken = function(name) {
   </head>
 
   <body bgcolor="#FFFFFF">
-  <div>Подтвердите почту- :<a href=${name}>Подтвердить</a></div>
+  <div>Accept email- :<a href=${name}>Accept</a></div>
   </body>
   </html>`
   );
@@ -64,7 +64,7 @@ module.exports.createCode = function(code) {
   </head>
 
   <body bgcolor="#FFFFFF">
-  <div>Код для смены пароля - ${code}</div>
+  <div>Code for reset - ${code}</div>
   </body>
   </html>`
   );
