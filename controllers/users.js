@@ -107,7 +107,8 @@ console.log(req.body)
     email: email,
     nickname: username,
     activate_token:token,
-    salt: userData.salt
+    salt: userData.salt,
+    media:[]
   });
   if (!newuser) {
     return res.status(200).json({
