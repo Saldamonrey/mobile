@@ -107,7 +107,7 @@ module.exports.uploadFile = async function(req, res) {
       fs.unlinkSync(req.file.path);
       return res.json({success: false, msg: 'Unsupported mimetype'});
     }
-    console.log(req.body)
+    console.log(req)
     console.log(req.file)
       User.updateMany({'_id': {$in :req.user}}, 
         {$addToSet: {media: {source:{uri:"http://92.53.124.246:3001/"+req.file.path.replace(/\\/g, '/')}}}}, 
