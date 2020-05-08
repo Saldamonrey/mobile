@@ -112,6 +112,7 @@ console.log(req.body)
   });
   if (!newuser) {
     return res.status(200).json({
+      success: false,
       message: "Please pass correct username and passwords."
     });
   } else {
@@ -122,10 +123,10 @@ console.log(req.body)
         ) {
         if (error) {
           console.log(error);
-          return res.json({ success: false, msg: "Message not send." });
+          return res.status(200).json({ success: false, msg: "Message not send." });
           } else {
             console.log(info.response);
-            return res.json({ success: true, msg: "Message send." });
+            return res.status(200).json({ success: true, msg: "Message send." });
           }
           });
       });
